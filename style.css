@@ -23,25 +23,25 @@ body {
     color: var(--cor-secundaria);
     font-family: var(--fonte);
     font-weight: 500;
-    font-size: 1.8rem;
-    width: 70%;
+    font-size: 1.6rem;
+    width: 100%;
     margin: 0 auto;
 }
 
 .cabecalho {
-    margin: 6.2rem 0;
+    margin: 6.2rem 0.5rem;
     text-align: center;
 }
 
 .cabecalho__titulo {
-    font-size: 3.6rem;
+    font-size: 3rem;
     font-weight: 600;
     line-height: 4.5rem;
     color: var(--cor-primaria);
 }
 
 .cabecalho__pesquisa {
-    width: 50%;
+    width: 80%;
     height: 7.4rem;
     opacity: 0.5;
     border-radius: 0.8rem;
@@ -52,7 +52,7 @@ body {
 
     font-family: var(--fonte);
     color: var(--cor-primaria);
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: 500;
     line-height: 2.2rem;
     padding-left: 2rem;
@@ -94,6 +94,7 @@ body {
 }
 
 .cabecalho__label {
+    font-size: 1.4rem;
     font-weight: 600;
     color: var(--cor-primaria);
 }
@@ -103,11 +104,12 @@ body {
     filter: drop-shadow(32.8387px 24.5482px 79px rgba(0, 0, 0, 0.15)) drop-shadow(23.8851px 17.855px 53.2479px rgba(0, 0, 0, 0.121406)) drop-shadow(16.6246px 12.4276px 34.4391px rgba(0, 0, 0, 0.10125)) drop-shadow(10.9035px 8.15079px 21.3701px rgba(0, 0, 0, 0.0867188)) drop-shadow(6.56775px 4.90965px 12.8375px rgba(0, 0, 0, 0.075)) drop-shadow(3.46346px 2.58907px 7.6377px rgba(0, 0, 0, 0.0632813)) drop-shadow(1.4367px 1.07399px 4.56719px rgba(0, 0, 0, 0.04875)) drop-shadow(0.333519px 0.249318px 2.42246px rgba(0, 0, 0, 0.0285938));
 
     display: flex;
+    flex-direction: column;
     justify-content: space-around;
     align-items: center;
 
     padding: 4.6rem 2.4rem;
-    margin-bottom: 4.8rem;
+    margin: 4.8rem  2rem;
 
 }
 
@@ -152,4 +154,28 @@ body {
 .card-filme__favoritar::before{
     content: url(./images/Heart-1.svg);
     margin-right: 0.5rem;
+}
+
+
+@media screen and (min-width: 1024px) {
+    body {
+        width: 70%;
+        font-size: 1.8rem;
+    }
+
+    .cabecalho__titulo {
+        font-size: 3.6rem;
+    }
+
+    .cabecalho__pesquisa {
+        width: 50%;
+        font-size: 1.8rem;
+    }
+
+    .card-filme {
+        flex-direction: row;
+        margin: 0 0 4.8rem 0;
+    }
+
+
 }
