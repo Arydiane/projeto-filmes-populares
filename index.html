@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <title>Filmes Populares</title>
+</head>
+<body>
+    <header class="cabecalho">
+        <h1 class="cabecalho__titulo">Filmes Populares</h1>
+        <input class="cabecalho__pesquisa" type="text" id="pesquisa" placeholder="Digite algum filme para pesquisar...">
+        <input type="checkbox" name="cabecalho__favoritos" id="favoritos">
+        <label class="cabecalho__label" for="favoritos">Mostrar meus filmes favoritos apenas</label>
+    </header>
+    <main>
+        <section class="card-filme">
+            <img src="https://api.lorem.space/image/movie?w=150&amp;amp;amp;amp;h=220" alt="Banner do filme" class="card-filme__banner">
+
+            <div class="card-filme__descricao">
+                <h2 class="card-filme__titulo">Titulo Filme</h2>
+                <p class="card-filme__classificacao">Classificação</p>
+                <p>card-filme__favoritar</p>
+            </div>
+            <p class="card-filme__resumo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure quibusdam hic, voluptas pariatur perspiciatis explicabo animi facere. Consectetur perspiciatis necessitatibus quisquam blanditiis, sit quas doloribus. Id nihil possimus earum debitis!</p>
+        </section>
+    </main>
+</body>
+</html>
