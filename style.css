@@ -109,7 +109,7 @@ body {
     color: var(--cor-primaria);
 }
 
-.card-filme {
+.filmes__card-filme {
     background-color: var(--cor-card);
     filter: drop-shadow(32.8387px 24.5482px 79px rgba(0, 0, 0, 0.15)) drop-shadow(23.8851px 17.855px 53.2479px rgba(0, 0, 0, 0.121406)) drop-shadow(16.6246px 12.4276px 34.4391px rgba(0, 0, 0, 0.10125)) drop-shadow(10.9035px 8.15079px 21.3701px rgba(0, 0, 0, 0.0867188)) drop-shadow(6.56775px 4.90965px 12.8375px rgba(0, 0, 0, 0.075)) drop-shadow(3.46346px 2.58907px 7.6377px rgba(0, 0, 0, 0.0632813)) drop-shadow(1.4367px 1.07399px 4.56719px rgba(0, 0, 0, 0.04875)) drop-shadow(0.333519px 0.249318px 2.42246px rgba(0, 0, 0, 0.0285938));
 
@@ -126,8 +126,7 @@ body {
     height: 13.9rem;
     border-radius: 50%;
     filter: drop-shadow(20px 20px 30px rgba(0, 0, 0, 0.3));
-
-    flex: 1 0 auto;
+    flex: 0 0 auto;
 }
 
 .card-filme__descricao {
@@ -151,16 +150,16 @@ body {
     font-weight: 400;
 }
 
+.card-filme__favoritar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 .card-filme__classificacao::before{
     content: url(./images/Star.svg);
     margin-right: 0.5rem;
 }
-
-.card-filme__favoritar::before{
-    content: url(./images/Heart-1.svg);
-    margin-right: 0.5rem;
-}
-
 
 @media screen and (min-width: 1024px) {
     body {
@@ -184,7 +183,7 @@ body {
         font-size: 1.6rem;
     }
 
-    .card-filme {
+    .filmes__card-filme{
         flex-direction: row;
         margin: 4.8rem 0;
     }
