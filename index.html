@@ -14,11 +14,21 @@
 <body>
     <header class="cabecalho">
         <h1 class="cabecalho__titulo">Filmes Populares</h1>
-        <input class="cabecalho__pesquisa" type="text" id="pesquisa" placeholder="Digite algum filme para pesquisar...">
-        <input type="checkbox" name="cabecalho__favoritos" id="favoritos">
-        <label class="cabecalho__label" for="favoritos">Mostrar meus filmes favoritos apenas</label>
     </header>
     <main>
+        <form class="formulario" role="pesquisa">
+            <input class="formulario__input-pesquisa" 
+                type="search" 
+                id="pesquisa" 
+                placeholder="Digite algum filme para pesquisar..."
+                aria-label="Digite algum filme para pesquisar..." 
+            />
+            <img class="formulario__icone-pesquisa" src="/images/search-icon.svg" alt="Ícone de pesquisa">
+        </form>
+
+        <input class="filmes__favoritos" type="checkbox" name="favoritos" id="favoritos">
+        <label class="filmes__favoritos-label" for="favoritos">Mostrar meus filmes favoritos apenas</label>
+
         <section class="card-filme">
             <img src="https://api.lorem.space/image/movie?w=150&amp;amp;amp;amp;h=220" alt="Banner do filme" class="card-filme__imagem">
 

@@ -2,7 +2,7 @@
     --cor-fundo: #17162E;
     --cor-primaria: #FFFFFF;
     --cor-secundaria: #ACACAC;
-    --cor-secundaria-alternativa:  #8A8A8A;
+    --cor-secundaria-alternativa:  #ffffff33;
     --cor-botao: #706EA8;
     --cor-card: #1D1C3B;
     --fonte: 'Kumbh Sans', sans-serif;
@@ -40,26 +40,38 @@ body {
     color: var(--cor-primaria);
 }
 
-.cabecalho__pesquisa {
-    width: 80%;
-    height: 7.4rem;
-    opacity: 0.5;
-    border-radius: 0.8rem;
-    background: no-repeat 90% url(./images/search-icon.svg) ;
-    background-color: var(--cor-secundaria-alternativa);
-    display: block;
+.formulario {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 90%;
+    gap: 1rem;
     margin: 4.8rem auto;
-
-    font-family: var(--fonte);
-    color: var(--cor-primaria);
-    font-size: 1.6rem;
-    font-weight: 500;
-    line-height: 2.2rem;
-    padding-left: 2rem;
+    background-color: var(--cor-secundaria-alternativa);
+    border-radius: 0.8rem;
 }
 
-.cabecalho__pesquisa::placeholder {
+.formulario__input-pesquisa {
+    width: 80%;
+    height: 7.4rem;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-family: var(--fonte);
+    color: var(--cor-primaria);
+    font-size: 1.4rem;
+    font-weight: 500;
+    line-height: 2.2rem;
+    padding-left: 0;
+}
+
+.formulario__input-pesquisa::placeholder {
     color: var(--cor-secundaria);
+    font-size: 1.3rem;
+}
+
+.formulario__icone-pesquisa {
+    cursor: pointer;
 }
 
 #favoritos {
@@ -81,7 +93,6 @@ body {
     border-radius: 0.4rem;
     border: 0.2rem solid var(--cor-botao);
     margin-right: 1rem;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -90,10 +101,9 @@ body {
 #favoritos:checked + label::before {
     content: "\2713";
     background-color: var(--cor-botao);
-   
 }
 
-.cabecalho__label {
+.filmes__favoritos-label {
     font-size: 1.4rem;
     font-weight: 600;
     color: var(--cor-primaria);
@@ -107,10 +117,8 @@ body {
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-
     padding: 4.6rem 2.4rem;
     margin: 4.8rem  2rem;
-
 }
 
 .card-filme__imagem {
@@ -124,9 +132,7 @@ body {
 
 .card-filme__descricao {
     color: var(--cor-primaria);
-
     flex: 1 0 30%;
-
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
@@ -137,7 +143,6 @@ body {
     flex: 1 0 auto;
     width: 100%;
     text-align: center;
-
     padding-bottom: 2.4rem;
 }
 
@@ -167,15 +172,21 @@ body {
         font-size: 3.6rem;
     }
 
-    .cabecalho__pesquisa {
-        width: 50%;
+    .formulario {
+        max-width: 70%;
+    }
+
+    .formulario__input-pesquisa {
         font-size: 1.8rem;
+    }
+
+    .formulario__input-pesquisa::placeholder {
+        font-size: 1.6rem;
     }
 
     .card-filme {
         flex-direction: row;
-        margin: 0 0 4.8rem 0;
+        margin: 4.8rem 0;
     }
-
 
 }
