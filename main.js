@@ -1,43 +1,40 @@
+import { API_KEY, BASE_URL, IMG_URL, language} from "./api.js"
+
 const elementoContainerFilmes = document.getElementById('filmes-container')
 
-const filmes = [
-    {
-      image: 'https://img.elo7.com.br/product/original/3FBA809/big-poster-filme-batman-2022-90x60-cm-lo002-poster-batman.jpg',
-      title: 'Batman',
-      rating: 9.2,
-      year: 2022,
-      description: "Descrição do filme…",
-      isFavorited: true,
-    },
-    {
-      image: 'https://upload.wikimedia.org/wikipedia/pt/thumb/9/9b/Avengers_Endgame.jpg/250px-Avengers_Endgame.jpg',
-      title: 'Avengers',
-      rating: 9.1,
-      year: 2019,
-      description: "Descrição do filme…",
-      isFavorited: false
-    },
-    {
-      image: 'https://upload.wikimedia.org/wikipedia/en/1/17/Doctor_Strange_in_the_Multiverse_of_Madness_poster.jpg',
-      title: 'Doctor Strange',
-      rating: 9.5,
-      year: 2022,
-      description: "Descrição do filme…",
-      isFavorited: false
-    },
-  ]
+  async function getFilmesPopulares() {
+
+    const url = `${BASE_URL}?${API_KEY}&${language}&page=1`
   
-  filmes.forEach(filme => renderizarFilme(filme))
+    const resposta = await fetch(url)
+    const { results } = await resposta.json()
+    
+    return results
+}
+  
+  window.onload =  async function () {
+
+    const filmes = await getFilmesPopulares()
+    console.log(filmes)
+    filmes.forEach(filme => renderizarFilme(filme))
+  }
+
 
   function renderizarFilme(filme) {
-    const {image:imagem, title:titulo, rating:classificacao, year:ano, description:resumo, isFavorited:favorito} = filme
+    const { backdrop_path:imagem, title:titulo, vote_average
+      :classificacao, release_date
+      :data, overview
+      :resumo } = filme
+
+    const ano = new Date(data).getFullYear()
+    const favorito = false 
 
     const elementoCardFilme = document.createElement("section")
     elementoCardFilme.classList.add("filmes__card-filme")
     elementoContainerFilmes.appendChild(elementoCardFilme);
 
     const elementoImagemFilme = document.createElement("img")
-    elementoImagemFilme.setAttribute("src", imagem)
+    elementoImagemFilme.setAttribute("src", `${IMG_URL}${imagem}`)
     elementoImagemFilme.setAttribute("alt", `${titulo} Poster`)
     elementoImagemFilme.classList.add("card-filme__imagem")
     elementoCardFilme.appendChild(elementoImagemFilme)
@@ -75,4 +72,3 @@ const filmes = [
     elementoResumoFilme.textContent = `${resumo}`
     elementoCardFilme.appendChild(elementoResumoFilme)
   }
-
