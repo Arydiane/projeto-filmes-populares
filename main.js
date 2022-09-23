@@ -1,21 +1,50 @@
-import { API_KEY, BASE_URL, IMG_URL, language} from "./api.js"
+import { API_KEY, BASE_URL_POLULAR, BASE_URL_BUSCA, IMG_URL, language} from "./api.js"
 
 const elementoContainerFilmes = document.getElementById('filmes-container')
+const formulario = document.querySelector('form')
+const input = document.getElementById('pesquisa')
+const botaoPesquisa = document.getElementById('botao_pesquisa')
 
-  async function getFilmesPopulares() {
+botaoPesquisa.addEventListener('click', buscarFilme)
+formulario.addEventListener('submit', function(e) {
+   e.preventDefault()
+   console.log('Entrou na escuta do formulario')
+   buscarFilme()
+})
 
-    const url = `${BASE_URL}?${API_KEY}&${language}&page=1`
+
+async function buscarFilme () {
+
+  const tituloFilme = input.value
+
+  console.log('Filme buscado'+tituloFilme)
+
+  if (tituloFilme != '') {
   
+    const url = `${BASE_URL_BUSCA}?${API_KEY}&${language}&query=${tituloFilme}&page=1&include_adult=false`
     const resposta = await fetch(url)
     const { results } = await resposta.json()
     
+    elementoContainerFilmes.innerHTML = ''
+    results.forEach( filme => renderizarFilme(filme))
+
+  } else {
+    window.alert('Informe o título de um filme para fazer a busca!')
+  }
+}
+
+
+  async function getFilmesPopulares() {
+
+    const url = `${BASE_URL_POLULAR}?${API_KEY}&${language}&page=1`
+  
+    const resposta = await fetch(url)
+    const { results } = await resposta.json()
     return results
 }
   
   window.onload =  async function () {
-
     const filmes = await getFilmesPopulares()
-    console.log(filmes)
     filmes.forEach(filme => renderizarFilme(filme))
   }
 
@@ -34,7 +63,7 @@ const elementoContainerFilmes = document.getElementById('filmes-container')
     elementoContainerFilmes.appendChild(elementoCardFilme);
 
     const elementoImagemFilme = document.createElement("img")
-    elementoImagemFilme.setAttribute("src", `${IMG_URL}${imagem}`)
+    elementoImagemFilme.setAttribute("src",`${IMG_URL}${imagem}`)
     elementoImagemFilme.setAttribute("alt", `${titulo} Poster`)
     elementoImagemFilme.classList.add("card-filme__imagem")
     elementoCardFilme.appendChild(elementoImagemFilme)
