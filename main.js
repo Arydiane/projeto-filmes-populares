@@ -5,6 +5,7 @@ const formulario = document.querySelector('form')
 const input = document.getElementById('pesquisa')
 const botaoPesquisa = document.getElementById('botao_pesquisa')
 
+
 botaoPesquisa.addEventListener('click', buscarFilme)
 formulario.addEventListener('submit', function(e) {
    e.preventDefault()
@@ -16,9 +17,6 @@ formulario.addEventListener('submit', function(e) {
 async function buscarFilme () {
 
   const tituloFilme = input.value
-
-  console.log('Filme buscado'+tituloFilme)
-
   if (tituloFilme != '') {
   
     const url = `${BASE_URL_BUSCA}?${API_KEY}&${language}&query=${tituloFilme}&page=1&include_adult=false`
@@ -33,11 +31,9 @@ async function buscarFilme () {
   }
 }
 
-
   async function getFilmesPopulares() {
 
     const url = `${BASE_URL_POLULAR}?${API_KEY}&${language}&page=1`
-  
     const resposta = await fetch(url)
     const { results } = await resposta.json()
     return results
@@ -47,7 +43,55 @@ async function buscarFilme () {
     const filmes = await getFilmesPopulares()
     filmes.forEach(filme => renderizarFilme(filme))
   }
+  
+  function botaoFilmeFavorito(evento, filme) {
+    const imagemFavorito = "images/Heart-fill.svg"
+    const imagemNaoFavorito = "images/Heart.svg"
 
+    if (evento.target.src.includes(imagemFavorito)){
+ 
+      evento.target.src = imagemNaoFavorito
+      retiraFilmeFavoritoLocalStorage(filme.id)
+
+    } else {
+      evento.target.src = imagemFavorito
+      salvaFilmeFavoritoLocalStorage(filme)
+    }
+
+  }
+
+  function getFilmesFavortiosLocalStorage(){
+    return JSON.parse(localStorage.getItem('filmesFavoritos'))
+  }
+
+  function setFilmesFavoritosLocalStorage(listafilmes){
+    localStorage.setItem('filmesFavoritos', JSON.stringify(listafilmes))
+  }
+
+  function salvaFilmeFavoritoLocalStorage(filme) {
+
+    const filmesFavoritos =  getFilmesFavortiosLocalStorage() || []
+    filmesFavoritos.push(filme)
+    setFilmesFavoritosLocalStorage(filmesFavoritos)
+
+  }
+
+  function retiraFilmeFavoritoLocalStorage(id) {
+
+    const filmesFavoritos =  getFilmesFavortiosLocalStorage() || []
+    console.log( typeof filmesFavoritos)
+    const posicaoFilme = filmesFavoritos.findIndex( elemento => elemento.id == id)
+    
+    if (posicaoFilme != -1){
+      filmesFavoritos.splice(posicaoFilme, 1)
+      setFilmesFavoritosLocalStorage(filmesFavoritos)
+    }
+  }
+
+  function verificaPertenceFilmeFavorito(id){
+    const filmesFavoritos =  getFilmesFavortiosLocalStorage() || []
+    return filmesFavoritos.find(elemento => elemento.id == id)
+  }
 
   function renderizarFilme(filme) {
     const { backdrop_path:imagem, title:titulo, vote_average
@@ -56,7 +100,8 @@ async function buscarFilme () {
       :resumo } = filme
 
     const ano = new Date(data).getFullYear()
-    const favorito = false 
+    const favorito = verificaPertenceFilmeFavorito(filme.id)
+    console.log('Filme favorito'+ favorito)
 
     const elementoCardFilme = document.createElement("section")
     elementoCardFilme.classList.add("filmes__card-filme")
@@ -87,8 +132,10 @@ async function buscarFilme () {
     elementoFilmeDescricao.appendChild(elementoCointainerFavoritar)
 
     const elementoImagemFavorito = document.createElement("img")
+    elementoImagemFavorito.classList.add("card-filme__btn-favoritar")
     elementoImagemFavorito.setAttribute("src", favorito ? "./images/Heart-fill.svg" : "./images/Heart.svg")
     elementoImagemFavorito.setAttribute("alt", "Ícone de favorito")
+    elementoImagemFavorito.addEventListener('click', (evento) => botaoFilmeFavorito(evento, filme))
     elementoCointainerFavoritar.appendChild(elementoImagemFavorito)
 
     const elementoTextoFavorito = document.createElement("p")
@@ -101,3 +148,4 @@ async function buscarFilme () {
     elementoResumoFilme.textContent = `${resumo}`
     elementoCardFilme.appendChild(elementoResumoFilme)
   }
+
