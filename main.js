@@ -1,55 +1,61 @@
-import { API_KEY, BASE_URL_POLULAR, BASE_URL_BUSCA, IMG_URL, language} from "./api.js"
+import { IMG_URL } from "./js/api-key.js"
+import { buscarFilmePorTitulo, getFilmesPopulares } from "./js/api.js"
+import { salvaFilmeFavoritoLocalStorage, retiraFilmeFavoritoLocalStorage, verificaPertenceFilmeFavorito, getFilmesFavortiosLocalStorage} from "./js/localStorage.js"
 
 const elementoContainerFilmes = document.getElementById('filmes-container')
 const formulario = document.querySelector('form')
-const input = document.getElementById('pesquisa')
 const botaoPesquisa = document.getElementById('botao_pesquisa')
+const checkboxFavoritos = document.getElementById('favoritos')
 
+function mostrarFilmes(listaFilmes){
+  limparConteinerFilmes()
+  listaFilmes.forEach( filme => renderizarFilme(filme))
+}
 
-botaoPesquisa.addEventListener('click', buscarFilme)
-formulario.addEventListener('submit', function(e) {
-   e.preventDefault()
-   console.log('Entrou na escuta do formulario')
-   buscarFilme()
-})
+async function buscarFilme() {
 
-
-async function buscarFilme () {
-
+  const input = document.getElementById('pesquisa')
   const tituloFilme = input.value
+
   if (tituloFilme != '') {
-  
-    const url = `${BASE_URL_BUSCA}?${API_KEY}&${language}&query=${tituloFilme}&page=1&include_adult=false`
-    const resposta = await fetch(url)
-    const { results } = await resposta.json()
-    
-    elementoContainerFilmes.innerHTML = ''
-    results.forEach( filme => renderizarFilme(filme))
+    const filmes = await buscarFilmePorTitulo(tituloFilme)    
+    mostrarFilmes(filmes)
 
   } else {
     window.alert('Informe o título de um filme para fazer a busca!')
   }
 }
 
-  async function getFilmesPopulares() {
+botaoPesquisa.addEventListener('click', buscarFilme)
+formulario.addEventListener('submit', function(e) {
+   e.preventDefault()
+   buscarFilme()
+})
 
-    const url = `${BASE_URL_POLULAR}?${API_KEY}&${language}&page=1`
-    const resposta = await fetch(url)
-    const { results } = await resposta.json()
-    return results
+checkboxFavoritos.addEventListener('click', (evento) => verificaExibicaoFilmesFavoritos(evento))
+
+async function verificaExibicaoFilmesFavoritos(evento) {
+
+  if (evento.target.checked){
+    const filmesFavoritos = getFilmesFavortiosLocalStorage() || []
+    mostrarFilmes(filmesFavoritos)
+
+  } else {
+    const filmesPopulares = await getFilmesPopulares()
+    mostrarFilmes(filmesPopulares)
+  }
 }
-  
-  window.onload =  async function () {
+
+window.onload =  async function () {
     const filmes = await getFilmesPopulares()
     filmes.forEach(filme => renderizarFilme(filme))
-  }
-  
-  function botaoFilmeFavorito(evento, filme) {
+}
+
+function botaoFilmeFavorito(evento, filme) {
     const imagemFavorito = "images/Heart-fill.svg"
     const imagemNaoFavorito = "images/Heart.svg"
 
     if (evento.target.src.includes(imagemFavorito)){
- 
       evento.target.src = imagemNaoFavorito
       retiraFilmeFavoritoLocalStorage(filme.id)
 
@@ -57,51 +63,17 @@ async function buscarFilme () {
       evento.target.src = imagemFavorito
       salvaFilmeFavoritoLocalStorage(filme)
     }
+}
 
-  }
+export function limparConteinerFilmes(){
+  elementoContainerFilmes.innerHTML = ''
+}
 
-  function getFilmesFavortiosLocalStorage(){
-    return JSON.parse(localStorage.getItem('filmesFavoritos'))
-  }
-
-  function setFilmesFavoritosLocalStorage(listafilmes){
-    localStorage.setItem('filmesFavoritos', JSON.stringify(listafilmes))
-  }
-
-  function salvaFilmeFavoritoLocalStorage(filme) {
-
-    const filmesFavoritos =  getFilmesFavortiosLocalStorage() || []
-    filmesFavoritos.push(filme)
-    setFilmesFavoritosLocalStorage(filmesFavoritos)
-
-  }
-
-  function retiraFilmeFavoritoLocalStorage(id) {
-
-    const filmesFavoritos =  getFilmesFavortiosLocalStorage() || []
-    console.log( typeof filmesFavoritos)
-    const posicaoFilme = filmesFavoritos.findIndex( elemento => elemento.id == id)
-    
-    if (posicaoFilme != -1){
-      filmesFavoritos.splice(posicaoFilme, 1)
-      setFilmesFavoritosLocalStorage(filmesFavoritos)
-    }
-  }
-
-  function verificaPertenceFilmeFavorito(id){
-    const filmesFavoritos =  getFilmesFavortiosLocalStorage() || []
-    return filmesFavoritos.find(elemento => elemento.id == id)
-  }
-
-  function renderizarFilme(filme) {
-    const { backdrop_path:imagem, title:titulo, vote_average
-      :classificacao, release_date
-      :data, overview
-      :resumo } = filme
+function renderizarFilme(filme) {
+    const { backdrop_path:imagem, title:titulo, vote_average:classificacao, release_date:data, overview:resumo } = filme
 
     const ano = new Date(data).getFullYear()
     const favorito = verificaPertenceFilmeFavorito(filme.id)
-    console.log('Filme favorito'+ favorito)
 
     const elementoCardFilme = document.createElement("section")
     elementoCardFilme.classList.add("filmes__card-filme")
@@ -147,5 +119,5 @@ async function buscarFilme () {
     elementoResumoFilme.classList.add("card-filme__resumo")
     elementoResumoFilme.textContent = `${resumo}`
     elementoCardFilme.appendChild(elementoResumoFilme)
-  }
+}
 
